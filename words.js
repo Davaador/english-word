@@ -83,5 +83,10 @@ const words = [
     {en: "declare", mn: "зарлах"},
     {en: "already", mn: "аль хэдийн"},
     {en: "order", mn: "дараалал"},
-    {en: "logic", mn: "логик"}
+    {en: "logic", mn: "логик"},
+    {en: "storage", mn: "Хадгалалт"},
+    {en: "key", mn: "Түлхүүр,нэр"},
+    {en: "value", mn:"Утга"},
+    {en: "save", mn: "Хадгалах"},
+    {en: "remove", mn: "Устгах"}
 ];

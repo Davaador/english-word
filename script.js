@@ -1,4 +1,7 @@
 let score = 0;
+let bestScore = Number(localStorage.getItem("bestScore")) || 0;
+const bestText = document.getElementById("bestText");
+bestText.textContent = "Best: " + bestScore;
 let index = Math.floor(Math.random() * words.length);
 const nextBtn = document.getElementById("nextbtn");
 const previousBtn = document.getElementById("previousBtn");
@@ -7,6 +10,7 @@ const answerInput = document.getElementById("answer");
 const checkBtn = document.getElementById("checkBtn");
 const result = document.getElementById("result");
 const scoreText = document.getElementById("scoreText");
+const resetBtn = document.getElementById("resetBtn");
 question.textContent = words[index].mn;
 let answered = false;
 const history = [];
@@ -22,9 +26,6 @@ function randomIndex() {
 nextBtn.addEventListener("click", function() {
     history.push(index);
     index = randomIndex();
-    // if(index >= words.length) {
-    //     index = 0;
-    // }
     question.textContent = words[index].mn;
     answerInput.value = "";
     result.textContent = "";
@@ -54,12 +55,23 @@ checkBtn.addEventListener("click", function(){
         result.textContent = "Correct!";
         result.style.color = "green";
         score++;
+        if(score > bestScore) {
+            bestScore = score;
+            localStorage.setItem("bestScore", bestScore);
+            bestText.textContent = "Best: " + bestScore;
+        }
     } else {
         result.textContent = "Wrong. Answer: " + words[index].en;
         result.style.color = "red";
 
     }
     scoreText.textContent = "Score: " + score;
+})
+
+resetBtn.addEventListener("click", function() {
+    bestScore = 0;
+    localStorage.removeItem("bestScore");
+    bestText.textContent = "Best: " + 0;
 })
 
 if ("serviceWorker" in navigator) {
