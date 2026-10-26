@@ -1,4 +1,4 @@
-const words = [
+const localWords = [
     // 1-р өдөр
     { en: "tag", mn: "шошго" },
     { en: "page", mn: "хуудас" },
@@ -88,5 +88,6 @@ const words = [
     {en: "key", mn: "Түлхүүр,нэр"},
     {en: "value", mn:"Утга"},
     {en: "save", mn: "Хадгалах"},
-    {en: "remove", mn: "Устгах"}
+    {en: "remove", mn: "Устгах"},
+    {en: "exist", mn: "байх, оршин байх"}
 ];

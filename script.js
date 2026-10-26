@@ -2,7 +2,6 @@ let score = 0;
 let bestScore = Number(localStorage.getItem("bestScore")) || 0;
 const bestText = document.getElementById("bestText");
 bestText.textContent = "Best: " + bestScore;
-let index = Math.floor(Math.random() * words.length);
 const nextBtn = document.getElementById("nextbtn");
 const previousBtn = document.getElementById("previousBtn");
 const question = document.getElementById("question");
@@ -11,9 +10,29 @@ const checkBtn = document.getElementById("checkBtn");
 const result = document.getElementById("result");
 const scoreText = document.getElementById("scoreText");
 const resetBtn = document.getElementById("resetBtn");
-question.textContent = words[index].mn;
 let answered = false;
 const history = [];
+let words = localWords;
+
+const API_URL = "https://words-api-1jvo.onrender.com/api/words"
+
+async function loadWords() {
+    try {
+        const response = await fetch(API_URL);
+        if(!response.ok){
+            throw new Error("Server error: " + response.status);
+        }
+        words = await response.json();
+        console.log("Loaded from API:", words.length);
+        
+    } catch (error) {
+        console.log("API failed, using local words.", error);
+    }
+    index = Math.floor(Math.random() * words.length);
+    question.textContent = words[index].mn; 
+}
+
+loadWords();
 
 function randomIndex() {
     let newIndex;
