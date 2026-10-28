@@ -58,3 +58,7 @@ select {
     font-size: 16px;
     box-sizing: border-box;
 }
+
+.category-box select {
+    margin-bottom: 8px;
+}

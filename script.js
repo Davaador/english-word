@@ -15,6 +15,8 @@ const history = [];
 let allWords = localWords;   // бүх үг
 let words = allWords;        // одоо сонгогдсон үгс
 const categorySelect = document.getElementById("categorySelect");
+const levelSelect = document.getElementById("levelSelect");
+
 
 // const API_URL = "https://words-api-1jvo.onrender.com/api/words"
 const API_URL = "http://localhost:8080/api/words"
@@ -57,17 +59,30 @@ async function loadWords() {
     showRandomWord();
 }
 
-categorySelect.addEventListener("change", function () {
-    const value = categorySelect.value;
-    words = value === "all"
-        ? allWords
-        : allWords.filter(w => w.category === value);
+function applyFilters() {
+    const cat = categorySelect.value;
+    const lvl = levelSelect.value;
+    words = allWords.filter(function(w) {
+        return (cat === "all" || w.category === cat) && (lvl === "all" || w.level === lvl);
+    });
+
+    if (words.length === 0) {
+        question.textContent = "No words here";
+        return;
+    }
     showRandomWord();
-});
+    
+}
+
+categorySelect.addEventListener("change", applyFilters);
+levelSelect.addEventListener("change", applyFilters);
 
 loadWords();
 
 function randomIndex() {
+    if (words.length < 2) {
+        return 0;
+    }
     let newIndex;
     do {
         newIndex = Math.floor(Math.random() * words.length);
@@ -76,6 +91,9 @@ function randomIndex() {
 }
 
 nextBtn.addEventListener("click", function() {
+    if (words.length === 0) {
+        return;
+    }
     history.push(index);
     index = randomIndex();
     question.textContent = words[index].mn;
@@ -86,7 +104,9 @@ nextBtn.addEventListener("click", function() {
 });
 
 previousBtn.addEventListener("click", function(){
-    
+    if (words.length === 0) {
+        return;
+    }
     if (history.length === 0) {
         return;   // буцах үг байхгүй
     }
@@ -98,6 +118,9 @@ previousBtn.addEventListener("click", function(){
 })
 
 checkBtn.addEventListener("click", function(){
+    if (words.length === 0) {
+        return;
+    }
     if (answered) {
         return;   // аль хэдийн шалгасан бол зогс
     }
