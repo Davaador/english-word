@@ -18,8 +18,8 @@ const categorySelect = document.getElementById("categorySelect");
 const levelSelect = document.getElementById("levelSelect");
 
 
-// const API_URL = "https://words-api-1jvo.onrender.com/api/words"
-const API_URL = "http://localhost:8080/api/words"
+const API_URL = "https://words-api-1jvo.onrender.com/api/words"
+// const API_URL = "http://localhost:8080/api/words"
 
 
 function fillCategories () {
