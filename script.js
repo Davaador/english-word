@@ -12,9 +12,34 @@ const scoreText = document.getElementById("scoreText");
 const resetBtn = document.getElementById("resetBtn");
 let answered = false;
 const history = [];
-let words = localWords;
+let allWords = localWords;   // бүх үг
+let words = allWords;        // одоо сонгогдсон үгс
+const categorySelect = document.getElementById("categorySelect");
 
-const API_URL = "https://words-api-1jvo.onrender.com/api/words"
+// const API_URL = "https://words-api-1jvo.onrender.com/api/words"
+const API_URL = "http://localhost:8080/api/words"
+
+
+function fillCategories () {
+    const categories = [...new Set(allWords.map(w => w.category).filter(Boolean))];
+    categorySelect.innerHTML = '<option value="all">All</option>';
+    categories.forEach(function(c) {
+        const option = document.createElement("option");
+        option.value = c;
+        option.textContent = c;
+        categorySelect.appendChild(option);
+    });
+}
+
+function showRandomWord() {
+    index = Math.floor(Math.random() * words.length);
+    question.textContent = words[index].mn;
+    answerInput.value = "";
+    result.textContent = "";
+    answered = false;
+    history.length = 0;
+    
+}
 
 async function loadWords() {
     try {
@@ -22,15 +47,23 @@ async function loadWords() {
         if(!response.ok){
             throw new Error("Server error: " + response.status);
         }
-        words = await response.json();
-        console.log("Loaded from API:", words.length);
+        allWords = await response.json();
         
     } catch (error) {
         console.log("API failed, using local words.", error);
     }
-    index = Math.floor(Math.random() * words.length);
-    question.textContent = words[index].mn; 
+    words = allWords;
+    fillCategories();
+    showRandomWord();
 }
+
+categorySelect.addEventListener("change", function () {
+    const value = categorySelect.value;
+    words = value === "all"
+        ? allWords
+        : allWords.filter(w => w.category === value);
+    showRandomWord();
+});
 
 loadWords();
 
